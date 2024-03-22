@@ -7,6 +7,7 @@ on:
       - v*
   pull_request:
     branches: [ ttim_release ]
+  workflow_dispatch:
   #release:
   #  types: [published]
 
