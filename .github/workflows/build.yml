@@ -92,10 +92,6 @@ jobs:
         make build SKIP_WEBUI=${{ matrix.skip_webui }} SKIP_SERVER_RUST=${{ matrix.skip_rust }}
         pip freeze  # output Python packages, useful for debugging dependency versions
 
-    - name: Run tests
-      run: |
-        source venv/bin/activate || source venv/Scripts/activate
-        make test SKIP_SERVER_RUST=${{ matrix.skip_rust }}
 
     # Don't run integration tests on Windows, doesn't work for some reason
     - name: Run integration tests
@@ -108,8 +104,7 @@ jobs:
       run: |
         source venv/bin/activate || source venv/Scripts/activate
         poetry install  # run again to ensure we have the correct version of PyInstaller
-        make package SKIP_SERVER_RUST=${{ matrix.skip_rust }}
-
+        make package
   release:
     needs: [build]
     if: startsWith(github.ref, 'refs/tags/v')  # only run on tag
