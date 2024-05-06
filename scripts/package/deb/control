@@ -1,0 +1,7 @@
+Package: Sundial
+Architecture: amd64
+Maintainer: Erik Bjäreholt <erik@bjareho.lt>
+Depends:
+Priority: optional
+Version: SCRIPT_VERSION_HERE
+Description: Open source time tracker

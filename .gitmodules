@@ -1,0 +1,24 @@
+[submodule "sd-core"]
+	path = sd-core
+	url = https://github.com/dholendar-27/aw-core.git
+[submodule "sd-client"]
+	path = sd-client
+	url = https://github.com/dholendar-27/aw-client.git
+[submodule "sd-server"]
+	path = sd-server
+	url = https://github.com/dholendar-27/aw-server.git
+[submodule "sd-watcher-afk"]
+	path = sd-watcher-afk
+	url = https://github.com/dholendar-27/aw-watcher-afk.git
+[submodule "sd-qt"]
+	path = sd-qt
+	url = https://github.com/dholendar-27/aw-qt.git
+[submodule "sd-watcher-window"]
+	path = sd-watcher-window
+	url = https://github.com/dholendar-27/aw-watcher-window.git
+[submodule "sd-notify"]
+	path = sd-notify
+	url = https://github.com/dholendar-27/aw-notify.git
+[submodule "sd-watcher-input"]
+	path = sd-watcher-input
+	url = https://github.com/dholendar-27/aw-watcher-input.git
