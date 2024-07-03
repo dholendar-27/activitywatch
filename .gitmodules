@@ -16,9 +16,3 @@
 [submodule "sd-watcher-window"]
 	path = sd-watcher-window
 	url = https://github.com/dholendar-27/aw-watcher-window.git
-[submodule "sd-notify"]
-	path = sd-notify
-	url = https://github.com/dholendar-27/aw-notify.git
-[submodule "sd-watcher-input"]
-	path = sd-watcher-input
-	url = https://github.com/dholendar-27/aw-watcher-input.git
