@@ -29,9 +29,6 @@ function get_platform() {
     echo $_platform;
 }
 
-function get_version() {
-    $(dirname "$0")/getversion.sh;
-}
 
 function get_arch() {
     _arch="$(uname -m)"
@@ -39,7 +36,7 @@ function get_arch() {
 }
 
 platform=$(get_platform)
-version=$(get_version)
+version="1.0.1"
 arch=$(get_arch)
 echo "Platform: $platform, arch: $arch, version: $version"
 

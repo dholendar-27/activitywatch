@@ -52,7 +52,6 @@ sd_server_a = Analysis(
     pathex=[],
     binaries=None,
     datas=[
-        (sds_location / "sd_server/static", "sd_server/static"),
         (restx_path / "templates", "flask_restx/templates"),
         (restx_path / "static", "flask_restx/static"),
         (sd_core_path / "schemas", "sd_core/schemas"),
@@ -95,6 +94,7 @@ elif platform.system() == "Darwin":
 datas = [
     (sd_qt_location / "resources/sd-qt.desktop", "sd_qt/resources"),
     (sd_qt_location / "media", "sd_qt/media"),
+    (sd_qt_location / "sd_qt/sd_desktop/resources", "sd_qt/sd_desktop/resources"),
 ]
 
 datas += dependent_datas  # Combine datas and dependent_datas
