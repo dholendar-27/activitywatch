@@ -116,7 +116,7 @@ test-integration:
 
 ICON := "sd-qt/media/logo/logo.png"
 
-sd-qt/media/logo/logo.icns:
+sd-qt/media/logo/logo.png:
 	mkdir -p build/MyIcon.iconset
 	sips -z 16 16     $(ICON) --out build/MyIcon.iconset/icon_16x16.png
 	sips -z 32 32     $(ICON) --out build/MyIcon.iconset/icon_16x16@2x.png
@@ -132,38 +132,38 @@ sd-qt/media/logo/logo.icns:
 	rm -R build/MyIcon.iconset
 	mv build/MyIcon.icns sd-qt/media/logo/logo.icns
 
-dist/Sundial.app: sd-qt/media/logo/logo.icns
+dist/TTim.app: sd-qt/media/logo/logo.png
 	pyinstaller --clean --noconfirm sd.spec
 
-dist/Sundial.dmg: dist/Sundial.app
+dist/TTim.dmg: dist/TTim.app
 	# NOTE: This does not codesign the dmg, that is done in the CI config
 	pip install dmgbuild
-	dmgbuild -s scripts/package/dmgbuild-settings.py -D app=dist/Sundial.app "Sundial" dist/Sundial.dmg
+	dmgbuild -s scripts/package/dmgbuild-settings.py -D app=dist/TTim.app "TTim" dist/TTim.dmg
 
 dist/notarize:
 	./scripts/notarize.sh
 
 package:
 	rm -rf dist
-	mkdir -p dist/Sundial
+	mkdir -p dist/TTim
 	for dir in $(PACKAGEABLES); do \
 		make --directory=$$dir package; \
-		cp -r $$dir/dist/$$dir dist/Sundial; \
+		cp -r $$dir/dist/$$dir dist/TTim; \
 	done
 # Move sd-qt to the root of the dist folder
-	mv dist/Sundial/sd-qt sd-qt-tmp
-	mv sd-qt-tmp/* dist/Sundial
+	mv dist/TTim/sd-qt sd-qt-tmp
+	mv sd-qt-tmp/* dist/TTim
 	rmdir sd-qt-tmp
 # Remove problem-causing binaries
-	rm -f dist/Sundial/libdrm.so.2       # see: https://github.com/ActivityWatch/activitywatch/issues/161
-	rm -f dist/Sundial/libharfbuzz.so.0  # see: https://github.com/ActivityWatch/activitywatch/issues/660#issuecomment-959889230
+	rm -f dist/TTim/libdrm.so.2       # see: https://github.com/ActivityWatch/activitywatch/issues/161
+	rm -f dist/TTim/libharfbuzz.so.0  # see: https://github.com/ActivityWatch/activitywatch/issues/660#issuecomment-959889230
 # These should be provided by the distro itself
 # Had to be removed due to otherwise causing the error:
 #   sd-qt: symbol lookup error: /opt/activitywatch/libQt5XcbQpa.so.5: undefined symbol: FT_Get_Font_Format
-	rm -f dist/Sundial/libfontconfig.so.1
-	rm -f dist/Sundial/libfreetype.so.6
+	rm -f dist/TTim/libfontconfig.so.1
+	rm -f dist/TTim/libfreetype.so.6
 # Remove unnecessary files
-	rm -rf dist/Sundial/pytz
+	rm -rf dist/TTim/pytz
 # Builds zips and setups
 	bash scripts/package/package-all.sh
 

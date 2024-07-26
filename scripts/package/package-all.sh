@@ -36,27 +36,27 @@ function get_arch() {
 }
 
 platform=$(get_platform)
-version="1.0.1"
+version="2.0.0"
 arch=$(get_arch)
 echo "Platform: $platform, arch: $arch, version: $version"
 
 function build_zip() {
     echo "Zipping executables..."
     pushd dist;
-    filename="Sundial-${version}-${platform}-${arch}.zip"
+    filename="TTim-${version}-${platform}-${arch}.zip"
     echo "Name of package will be: $filename"
 
     if [[ $platform == "windows"* ]]; then
-        7z a $filename Sundial;
+        7z a $filename TTim;
     else
-        zip -r $filename Sundial;
+        zip -r $filename TTim;
     fi
     popd;
     echo "Zip built!"
 }
 
 function build_setup() {
-    filename="Sundial-${version}-${platform}-${arch}-setup.exe"
+    filename="TTim-${version}-${platform}-${arch}-setup.exe"
     echo "Name of package will be: $filename"
 
     innosetupdir="/c/Program Files (x86)/Inno Setup 6"
@@ -68,7 +68,7 @@ function build_setup() {
     # Windows installer version should not include 'v' prefix, see: https://github.com/microsoft/winget-pkgs/pull/17564
     version_no_prefix="$(echo $version | sed -e 's/^v//')"
     env SD_VERSION=$version_no_prefix "$innosetupdir/iscc.exe" scripts/package/TTim-setup.iss
-    mv dist/Sundial-setup.exe dist/$filename
+    mv dist/TTim-setup.exe dist/$filename
     echo "Setup built!"
 }
 

@@ -13,7 +13,7 @@ import os.path
 
 # .. Useful stuff ..............................................................
 
-application = defines.get('app', 'dist/Sundial.app')
+application = defines.get('app', 'dist/TTim.app')
 appname = os.path.basename(application)
 
 def icon_from_app(app_path):
