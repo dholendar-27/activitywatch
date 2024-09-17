@@ -3,10 +3,10 @@
 applemail=$APPLE_EMAIL # Email address used for Apple ID
 password=$APPLE_PASSWORD # See apps-specific password https://support.apple.com/en-us/HT204397
 teamid=$APPLE_TEAMID # Team idenitifer (if single developer, then set to developer identifier)
-keychain_profile="TTim-$APPLE_PERSONALID"  # name of the keychain profile to use
-bundleid=net.ralvie.TTim # Match sd.spec
-app=dist/TTim.app
-dmg=dist/TTim.dmg
+keychain_profile="Sundial-$APPLE_PERSONALID"  # name of the keychain profile to use
+bundleid=net.ralvie.Sundial # Match sd.spec
+app=dist/Sundial.app
+dmg=dist/Sundial.dmg
 
 # XCode >= 13 
 run_notarytool() {

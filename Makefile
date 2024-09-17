@@ -132,38 +132,38 @@ sd-qt/media/logo/logo.png:
 	rm -R build/MyIcon.iconset
 	mv build/MyIcon.icns sd-qt/media/logo/logo.icns
 
-dist/TTim.app: sd-qt/media/logo/logo.png
+dist/Sundial.app: sd-qt/media/logo/logo.png
 	pyinstaller --clean --noconfirm sd.spec
 
-dist/TTim.dmg: dist/TTim.app
+dist/Sundial.dmg: dist/Sundial.app
 	# NOTE: This does not codesign the dmg, that is done in the CI config
 	pip install dmgbuild
-	dmgbuild -s scripts/package/dmgbuild-settings.py -D app=dist/TTim.app "TTim" dist/TTim.dmg
+	dmgbuild -s scripts/package/dmgbuild-settings.py -D app=dist/Sundial.app "Sundial" dist/Sundial.dmg
 
 dist/notarize:
 	./scripts/notarize.sh
 
 package:
 	rm -rf dist
-	mkdir -p dist/TTim
+	mkdir -p dist/Sundial
 	for dir in $(PACKAGEABLES); do \
 		make --directory=$$dir package; \
-		cp -r $$dir/dist/$$dir dist/TTim; \
+		cp -r $$dir/dist/$$dir dist/Sundial; \
 	done
 # Move sd-qt to the root of the dist folder
-	mv dist/TTim/sd-qt sd-qt-tmp
-	mv sd-qt-tmp/* dist/TTim
+	mv dist/Sundial/sd-qt sd-qt-tmp
+	mv sd-qt-tmp/* dist/Sundial
 	rmdir sd-qt-tmp
 # Remove problem-causing binaries
-	rm -f dist/TTim/libdrm.so.2       # see: https://github.com/ActivityWatch/activitywatch/issues/161
-	rm -f dist/TTim/libharfbuzz.so.0  # see: https://github.com/ActivityWatch/activitywatch/issues/660#issuecomment-959889230
+	rm -f dist/Sundial/libdrm.so.2       # see: https://github.com/ActivityWatch/activitywatch/issues/161
+	rm -f dist/Sundial/libharfbuzz.so.0  # see: https://github.com/ActivityWatch/activitywatch/issues/660#issuecomment-959889230
 # These should be provided by the distro itself
 # Had to be removed due to otherwise causing the error:
 #   sd-qt: symbol lookup error: /opt/activitywatch/libQt5XcbQpa.so.5: undefined symbol: FT_Get_Font_Format
-	rm -f dist/TTim/libfontconfig.so.1
-	rm -f dist/TTim/libfreetype.so.6
+	rm -f dist/Sundial/libfontconfig.so.1
+	rm -f dist/Sundial/libfreetype.so.6
 # Remove unnecessary files
-	rm -rf dist/TTim/pytz
+	rm -rf dist/Sundial/pytz
 # Builds zips and setups
 	bash scripts/package/package-all.sh
 

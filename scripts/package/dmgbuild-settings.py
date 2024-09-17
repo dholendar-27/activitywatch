@@ -13,15 +13,16 @@ import os.path
 
 # .. Useful stuff ..............................................................
 
-application = defines.get('app', 'dist/TTim.app')
+application = defines.get('app', 'dist/Sundial.app')
 appname = os.path.basename(application)
+
 
 def icon_from_app(app_path):
     plist_path = os.path.join(app_path, 'Contents', 'Info.plist')
     with open(plist_path, "rb") as f:
         plist = plistlib.load(f)
     icon_name = plist['CFBundleIconFile']
-    icon_root,icon_ext = os.path.splitext(icon_name)
+    icon_root, icon_ext = os.path.splitext(icon_name)
     if not icon_ext:
         icon_ext = '.icns'
     icon_name = icon_root + icon_ext
@@ -35,6 +36,7 @@ def icon_from_app(app_path):
 # Uncomment to override the output volume name
 # volume_name = 'Test'
 
+
 # Volume format (see hdiutil create -help)
 format = defines.get('format', 'UDBZ')
 
@@ -42,10 +44,10 @@ format = defines.get('format', 'UDBZ')
 size = defines.get('size', None)
 
 # Files to include
-files = [ application ]
+files = [application]
 
 # Symlinks to create
-symlinks = { 'Applications': '/Applications' }
+symlinks = {'Applications': '/Applications'}
 
 # Volume icon
 #
@@ -53,7 +55,7 @@ symlinks = { 'Applications': '/Applications' }
 # image, *or* you can define badge_icon, in which case the icon file you specify
 # will be used to badge the system's Removable Disk icon
 #
-#icon = '/path/to/icon.icns'
+# icon = '/path/to/icon.icns'
 badge_icon = icon_from_app(application)
 
 # Where to put the icons
@@ -87,7 +89,7 @@ arrange_by = None
 grid_offset = (0, 0)
 grid_spacing = 100
 scroll_position = (0, 0)
-label_pos = 'bottom' # or 'right'
+label_pos = 'bottom'  # or 'right'
 text_size = 16
 icon_size = 128
 
@@ -138,4 +140,3 @@ list_column_sort_directions = {
     'version': 'ascending',
     'comments': 'ascending',
 }
-
