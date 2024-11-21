@@ -42,9 +42,9 @@ if platform.system() == "Windows":
     # The Windows version includes paths to Qt binaries which are
     # not automatically found due to bug in PyInstaller 3.2.
     # See: https://github.com/pyinstaller/pyinstaller/issues/2152
-    import PyQt5
+    import PySide6
 
-    pyqt_path = os.path.dirname(PyQt5.__file__)
+    pyqt_path = os.path.dirname(PySide6.__file__)
     extra_pathex.append(pyqt_path + "\\Qt\\bin")
 
 sd_server_a = Analysis(
@@ -56,21 +56,7 @@ sd_server_a = Analysis(
         (restx_path / "static", "flask_restx/static"),
         (sd_core_path / "schemas", "sd_core/schemas"),
     ],
-    hiddenimports=[
-    'reportlab',
-    'reportlab.graphics',
-    'reportlab.lib.utils',
-    'reportlab.rl_settings',
-    'reportlab.lib.units',
-    'reportlab.pdfbase.pdfmetrics',
-    'reportlab.graphics.barcode.common',
-    'reportlab.graphics.barcode.code128',
-    'reportlab.graphics.barcode.code93',
-    'reportlab.graphics.barcode.code39',
-    'reportlab.graphics.barcode.usps',
-    'reportlab.graphics.barcode.usps4s',
-    'reportlab.graphics.barcode.ecc200datamatrix',
-    ],
+    hiddenimports=[],
     hookspath=[],
     runtime_hooks=[],
     excludes=[],
