@@ -1,9 +1,9 @@
 # =====================================
-# Makefile for the ActivityWatch bundle
+# Makefile for the Sundial bundle
 # =====================================
 #
 # [GUIDE] How to install from source:
-#  - https://activitywatch.readthedocs.io/en/latest/installing-from-source.html
+#  - https://Sundial.readthedocs.io/en/latest/installing-from-source.html
 #
 # We recommend creating and activating a Python virtualenv before building.
 # Instructions on how to do this can be found in the guide linked above.
@@ -13,8 +13,8 @@ SHELL := /usr/bin/env bash
 
 SUBMODULES := sd-core sd-client sd-qt sd-server sd-watcher-afk sd-watcher-window
 
-# Include extras if SD_EXTRAS is true
-ifeq ($(SD_EXTRAS),true)
+# Include extras if sd_EXTRAS is true
+ifeq ($(sd_EXTRAS),true)
 	SUBMODULES := $(SUBMODULES) sd-notify sd-watcher-input
 endif
 
@@ -49,7 +49,7 @@ build:
 		echo "Building $$module"; \
 		make --directory=$$module build SKIP_WEBUI=$(SKIP_WEBUI); \
 	done
-#   The below is needed due to: https://github.com/ActivityWatch/activitywatch/issues/173
+#   The below is needed due to: https://github.com/Sundial/Sundial/issues/173
 	make --directory=sd-client build
 	make --directory=sd-core build
 #	Needed to ensure that the server has the correct version set
@@ -109,14 +109,14 @@ test:
 test-integration:
 	# TODO: Move "integration tests" to sd-client
 	# FIXME: For whatever reason the script stalls on Appveyor
-	#        Example: https://ci.appveyor.com/project/ErikBjare/activitywatch/build/1.0.167/job/k1ulexsc5ar5uv4v
+	#        Example: https://ci.appveyor.com/project/ErikBjare/Sundial/build/1.0.167/job/k1ulexsc5ar5uv4v
 	# sd-server-python
 	@echo "== Integration testing sd-server =="
 	@pytest ./scripts/tests/integration_tests.py ./sd-server/tests/ -v
 
 ICON := "sd-qt/media/logo/logo.png"
 
-sd-qt/media/logo/logo.png:
+sd-qt/media/logo/logo.icns:
 	mkdir -p build/MyIcon.iconset
 	sips -z 16 16     $(ICON) --out build/MyIcon.iconset/icon_16x16.png
 	sips -z 32 32     $(ICON) --out build/MyIcon.iconset/icon_16x16@2x.png
@@ -132,7 +132,7 @@ sd-qt/media/logo/logo.png:
 	rm -R build/MyIcon.iconset
 	mv build/MyIcon.icns sd-qt/media/logo/logo.icns
 
-dist/Sundial.app: sd-qt/media/logo/logo.png
+dist/Sundial.app: sd-qt/media/logo/logo.icns
 	pyinstaller --clean --noconfirm sd.spec
 
 dist/Sundial.dmg: dist/Sundial.app
@@ -155,11 +155,11 @@ package:
 	mv sd-qt-tmp/* dist/Sundial
 	rmdir sd-qt-tmp
 # Remove problem-causing binaries
-	rm -f dist/Sundial/libdrm.so.2       # see: https://github.com/ActivityWatch/activitywatch/issues/161
-	rm -f dist/Sundial/libharfbuzz.so.0  # see: https://github.com/ActivityWatch/activitywatch/issues/660#issuecomment-959889230
+	rm -f dist/Sundial/libdrm.so.2       # see: https://github.com/Sundial/Sundial/issues/161
+	rm -f dist/Sundial/libharfbuzz.so.0  # see: https://github.com/Sundial/Sundial/issues/660#issuecomment-959889230
 # These should be provided by the distro itself
 # Had to be removed due to otherwise causing the error:
-#   sd-qt: symbol lookup error: /opt/activitywatch/libQt5XcbQpa.so.5: undefined symbol: FT_Get_Font_Format
+#   sd-qt: symbol lookup error: /opt/Sundial/libQt5XcbQpa.so.5: undefined symbol: FT_Get_Font_Format
 	rm -f dist/Sundial/libfontconfig.so.1
 	rm -f dist/Sundial/libfreetype.so.6
 # Remove unnecessary files

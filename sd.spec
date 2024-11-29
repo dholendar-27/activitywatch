@@ -42,9 +42,9 @@ if platform.system() == "Windows":
     # The Windows version includes paths to Qt binaries which are
     # not automatically found due to bug in PyInstaller 3.2.
     # See: https://github.com/pyinstaller/pyinstaller/issues/2152
-    import PyQt5
+    import PyQt6
 
-    pyqt_path = os.path.dirname(PyQt5.__file__)
+    pyqt_path = os.path.dirname(PyQt6.__file__)
     extra_pathex.append(pyqt_path + "\\Qt\\bin")
 
 sd_server_a = Analysis(
@@ -52,6 +52,7 @@ sd_server_a = Analysis(
     pathex=[],
     binaries=None,
     datas=[
+        (sds_location / "sd_server/static", "sd_server/static"),
         (restx_path / "templates", "flask_restx/templates"),
         (restx_path / "static", "flask_restx/static"),
         (sd_core_path / "schemas", "sd_core/schemas"),
@@ -80,7 +81,6 @@ elif platform.system() == "Darwin":
 datas = [
     (sd_qt_location / "resources/sd-qt.desktop", "sd_qt/resources"),
     (sd_qt_location / "media", "sd_qt/media"),
-    (sd_qt_location / "sd_qt/sd_desktop/resources", "sd_qt/sd_desktop/resources"),
 ]
 
 datas += dependent_datas  # Combine datas and dependent_datas
@@ -90,12 +90,10 @@ sd_qt_a = Analysis(
     pathex=[] + extra_pathex,
     binaries=None,
     datas=datas,
-    hiddenimports=['PySide6.QtCore',
-        'PySide6.QtGui',
-        'PySide6.QtWidgets',],
+    hiddenimports=['PyQt6'],
     hookspath=[],
     runtime_hooks=[],
-    excludes=['PyQt5', 'PySide2', 'PyQt6'],
+    excludes=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=block_cipher,
