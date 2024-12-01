@@ -42,9 +42,9 @@ if platform.system() == "Windows":
     # The Windows version includes paths to Qt binaries which are
     # not automatically found due to bug in PyInstaller 3.2.
     # See: https://github.com/pyinstaller/pyinstaller/issues/2152
-    import PyQt6
+    import PySide6
 
-    pyqt_path = os.path.dirname(PyQt6.__file__)
+    pyqt_path = os.path.dirname(PySide6.__file__)
     extra_pathex.append(pyqt_path + "\\Qt\\bin")
 
 sd_server_a = Analysis(
@@ -90,7 +90,7 @@ sd_qt_a = Analysis(
     pathex=[] + extra_pathex,
     binaries=None,
     datas=datas,
-    hiddenimports=['PyQt6'],
+    hiddenimports=['PySide6'],
     hookspath=[],
     runtime_hooks=[],
     excludes=[],
