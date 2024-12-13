@@ -54,7 +54,6 @@ Type: filesandordirs; Name: "{app}\*"
 Type: filesandordirs; Name: "{userstartup}\{#MyAppName}.lnk"
 ; Add any additional uninstallation cleanup steps here, such as removing registry entries
 
-
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "Sundial";
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Comment: "Sundial";
@@ -68,3 +67,65 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 
 [InstallDelete]
 Type: filesandordirs; Name: "{app}\"
+
+[Code]
+function IsProcessRunning(const AProcessName: string): Boolean;
+var
+  ResultCode: Integer;
+begin
+  // Use the tasklist command to check if the process is running
+  Exec('cmd.exe', '/C tasklist /FI "IMAGENAME eq ' + AProcessName + '" | find /I "' + AProcessName + '"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  
+  // If find returns 0, the process is running
+  Result := (ResultCode = 0);
+end;
+
+procedure StopApplication();
+var
+  ResultCode: Integer;
+  ProcessesStopped: Boolean;
+begin
+  // Initialize the flag to track if any process was stopped
+  ProcessesStopped := False;
+
+  // Check and stop each process
+  if IsProcessRunning('{#MyAppExeName}') then
+  begin
+    // Kill the process using taskkill
+    Exec('taskkill', '/F /IM {#MyAppExeName}', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    ProcessesStopped := True;
+  end;
+
+  if IsProcessRunning('sd-watcher-window.exe') then
+  begin
+    Exec('taskkill', '/F /IM sd-watcher-window.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    ProcessesStopped := True;
+  end;
+
+  if IsProcessRunning('sd-watcher-afk.exe') then
+  begin
+    Exec('taskkill', '/F /IM sd-watcher-afk.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    ProcessesStopped := True;
+  end;
+
+  if IsProcessRunning('sd-server.exe') then
+  begin
+    Exec('taskkill', '/F /IM sd-server.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    ProcessesStopped := True;
+  end;
+
+  // Only show this message if at least one process was running and stopped
+  if ProcessesStopped then
+  begin
+    MsgBox('The application has been stopped successfully. Uninstallation will continue.', mbInformation, MB_OK);
+  end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    MsgBox('Warning: This action will completely remove the application and its files.', mbInformation, MB_OK);
+    StopApplication();
+  end;
+end;
