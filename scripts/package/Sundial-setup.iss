@@ -84,6 +84,7 @@ procedure StopApplication();
 var
   ResultCode: Integer;
   ProcessesStopped: Boolean;
+  MsgResult: Integer;
 begin
   // Initialize the flag to track if any process was stopped
   ProcessesStopped := False;
@@ -91,7 +92,6 @@ begin
   // Check and stop each process
   if IsProcessRunning('{#MyAppExeName}') then
   begin
-    // Kill the process using taskkill
     Exec('taskkill', '/F /IM {#MyAppExeName}', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     ProcessesStopped := True;
   end;
@@ -114,18 +114,29 @@ begin
     ProcessesStopped := True;
   end;
 
-  // Only show this message if at least one process was running and stopped
+  // Show message only if processes were stopped
   if ProcessesStopped then
   begin
-    MsgBox('The application has been stopped successfully. Uninstallation will continue.', mbInformation, MB_OK);
+    MsgResult := MsgBox('The application has been stopped successfully. Uninstallation will continue.', mbInformation, MB_OKCancel);
+    if MsgResult <> IDOK then
+    begin
+      Abort;  // Abort the uninstallation process
+    end;
   end;
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  MsgResult: Integer;
 begin
   if CurUninstallStep = usUninstall then
   begin
-    MsgBox('Warning: This action will completely remove the application and its files.', mbInformation, MB_OK);
+    MsgResult := MsgBox('Warning: This action will completely remove the application and its files.', mbInformation, MB_OKCancel);
+    if MsgResult <> IDOK then
+    begin
+      Abort;  // Abort if the user cancels or closes the dialog
+    end;
+
     StopApplication();
   end;
 end;
